@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron bg-dark text-light">
+            <h1>Welcome to the Dojo Store!</h1>
+        </div>
+        <div class="alert alert-info">
+            Your cart:
+            <a href="/cart" class="btn btn-secondary">
+                Cart: {{ request.session.cart|length }}
+            </a>
+        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Buy?</th>
+                </tr>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>${{ product.price }}</td>
+                        <td>
+                            <form action="/add_to_cart/{{ product.id }}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="name" value="{{product.name}}" />
+                                <input type="hidden" name="price" value="{{product.price}}" />
+                                <button type="submit" class="btn btn-primary btn-sm">Buy!</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
